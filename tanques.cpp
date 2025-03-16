@@ -1,4 +1,6 @@
 #include<iostream>
+#include<cstdlib>
+#include<ctime>
 using namespace std;
 
 class tanquepetroleo {
@@ -27,6 +29,6 @@ class sensor: public tanquepetroleo{
 };
 
 int main(){
-	cout << "Codigo desarrollado por Daniel Moran en la Universidad Nacional Experimental Politecnica de Venezuela \n"<< endl;
+	cout << "Codigo desarrollado por Daniel Moran en la Universidad Nacional Experimental Politecnica de Venezuela a\n"<< endl;
 	return 0;
 }
