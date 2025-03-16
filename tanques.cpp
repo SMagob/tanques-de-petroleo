@@ -28,7 +28,14 @@ class sensor: public tanquepetroleo{
 	}
 };
 
+class alarma{
+	public:
+	bool sonar(){
+
+	}
+};
+
 int main(){
-	cout << "Codigo desarrollado por Daniel Moran en la Universidad Nacional Experimental Politecnica de Venezuela a\n"<< endl;
+	cout << "Codigo desarrollado por Daniel Moran, Jesus Morales, Ronald Gordillo en la Universidad Nacional Experimental Politecnica de Venezuela \n"<< endl;
 	return 0;
 }
