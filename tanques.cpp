@@ -5,26 +5,26 @@ class tanquepetroleo {
 	private:
 	int codigo;
 	float nivelliquido, temperatura, presion, densidad, nivelagua;
-}
+};
 
 class sensor: public tanquepetroleo{
 	public:
-	medirnivelliquido(){
+	float medirnivelliquido(){
 
 	}
-	medirtemperatura(){
+	float medirtemperatura(){
 
 	}
-	medirpresion(){
+	float medirpresion(){
 
 	}
-	medirdensidad(){
+	float medirdensidad(){
 
 	}
-	medirnivelagua(){
+	float medirnivelagua(){
 		
 	}
-}
+};
 
 int main(){
 	cout << "Codigo desarrollado por Daniel Moran en la Universidad Nacional Experimental Politecnica de Venezuela \n"<< endl;
