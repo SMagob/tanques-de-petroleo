@@ -27,6 +27,6 @@ class sensor: public tanquepetroleo{
 };
 
 int main(){
-	cout << "Codigo desarrollado por Daniel Moran en la Universidad Nacional Experimental Politecnica de Venezuela \n"<< endl;
+	cout << "Codigo desarrollado por Daniel Moran, Jesus Morales en la Universidad Nacional Experimental Politecnica de Venezuela \n"<< endl;
 	return 0;
 }
