@@ -36,6 +36,6 @@ class alarma{
 };
 
 int main(){
-	cout << "Codigo desarrollado por Daniel Moran, Jesus Morales en la Universidad Nacional Experimental Politecnica de Venezuela \n"<< endl;
+	cout << "Codigo desarrollado por Daniel Moran, Jesus Morales, Ronald Gordillo en la Universidad Nacional Experimental Politecnica de Venezuela \n"<< endl;
 	return 0;
 }
