@@ -36,10 +36,6 @@ class alarma{
 };
 
 int main(){
-<<<<<<<<< Temporary merge branch 1
-	cout << "Codigo desarrollado por Daniel Moran en la Universidad Nacional Experimental Politecnica de Venezuela a\n"<< endl;
-=========
-	cout << "Codigo desarrollado por Daniel Moran, Jesus Morales en la Universidad Nacional Experimental Politecnica de Venezuela \n"<< endl;
->>>>>>>>> Temporary merge branch 2
+	cout << "Codigo desarrollado por Daniel Moran, Jesus Morales, Ronald Gordillo en la Universidad Nacional Experimental Politecnica de Venezuela \n"<< endl;
 	return 0;
 }
