@@ -95,7 +95,6 @@ class alarma{
 };
 
 int main(){
-<<<<<<< HEAD
 	
 	TanquePetroleo tanque;
     Sensor sensor;
@@ -113,9 +112,3 @@ int main(){
 
     return 0;
 }
-	
-=======
-	cout << "Codigo desarrollado por Daniel Moran, Jesus Morales, Ronald Gordillo en la Universidad Nacional Experimental Politecnica de Venezuela \n"<< endl;
-	return 0;
-}
->>>>>>> f9a769b22bc7c365be8a1a42774813f1976f874a
