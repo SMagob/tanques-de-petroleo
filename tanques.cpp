@@ -53,7 +53,7 @@ class Supervisor{
 	};
 };
 
-class Sensor : public TanquePetroleo, public Alarma {
+class Sensor : public Alarma {
 public:
 	
 	
@@ -120,7 +120,7 @@ public:
 
 
 
-class sistemasupervisorio : virtual public TanquePetroleo, virtual public Sensor, public Alarma, public Supervisor{
+class sistemasupervisorio : virtual public TanquePetroleo, virtual public Sensor, public Supervisor{
 	public:
 
 	void iniciarsistema(){
@@ -129,6 +129,7 @@ class sistemasupervisorio : virtual public TanquePetroleo, virtual public Sensor
 	Alarma alarma;
 	Supervisor supervisor;	
 	int opcion;
+	
 	cout <<  "             Sistema iniciado correctamente\n\n";
 	tanque.generarParametros();
 	sensor.leerNivelLiquido(tanque);
@@ -136,7 +137,29 @@ class sistemasupervisorio : virtual public TanquePetroleo, virtual public Sensor
     sensor.leerPresion(tanque);
     sensor.leerDensidad(tanque);
     sensor.leerNivelAgua(tanque);
+	cin >> opcion;
+	switch (opcion){
+		case 0:
+
+		break;
+		case 1:
+
+		break;
+		case 2:
+
+		break;
+		case 3:
+
+		break;
+		case 4:
+
+		break;
+		default:
+		cout <<"No escogio ninguna de las opciones, vuelva a ingresar la opcion correspondiente.";
+		break;
+	};
 	}
+
 };
 
 int main(){
