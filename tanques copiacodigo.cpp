@@ -24,25 +24,85 @@ public:
     }
 };
 
-class Alarma : virtual public TanquePetroleo{
-	public:
-
-	void activaralarmal(){
-		cout << " Liquido fuera del intervalo!" << endl;
-	}
-
-	void activaralarmall(){
-		cout << " Temperatura fuera del intervalo!" << endl;
-	}
-
-	void activaralarmalll(){
-		cout << " Presion fuera del intervalo!" << endl;
-	}
-
-	void activaralarmalv(){
-		cout << " Agua fuera del intervalo!" << endl;
-	}
+class Sensor : public TanquePetroleo {
+public:
 	
+	
+    bool  leerNivelLiquido(const TanquePetroleo& tanque) {
+            cout << "Nivel de Liquido: " << tanque.nivelLiquido ;	
+        if (tanque.nivelLiquido >= 0 && tanque.nivelLiquido <= 90) {
+            cout << "Dentro del intervalo." << endl;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    bool leerTemperatura(const TanquePetroleo& tanque) {
+        cout << "Temperatura: " << tanque.temperatura ;
+        if (tanque.temperatura >= -20 && tanque.temperatura <= 100) {
+            cout << "Dentro del intervalo." << endl;
+            return true;
+        } else {
+            return false;
+		}
+    }
+
+    bool leerPresion(const TanquePetroleo& tanque) {
+        cout << "Presion: " << tanque.presion ;
+        if (tanque.presion >= 2 && tanque.presion <= 8) {
+            cout << "Dentro del intervalo." << endl;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    void leerDensidad(const TanquePetroleo& tanque) {
+        cout << "Densidad: " << tanque.densidad ;
+        if (tanque.densidad >= 0.83 && tanque.densidad < 0.87) {
+            cout << "Tipo de crudo: Ligero" << endl;
+        } 	
+        if (tanque.densidad >= 0.87 && tanque.densidad < 0.92) {
+            cout << "Tipo de crudo: Mediano" << endl;
+        } 	
+        if (tanque.densidad >= 0.92 && tanque.densidad < 1.00) {
+            cout << "Tipo de crudo: Pesado" << endl;
+        } 	
+		if (tanque.densidad >= 1) {
+            cout << "Tipo de crudo: Extrapesado" << endl;
+        } 	        
+    }
+
+    bool leerNivelAgua(const TanquePetroleo& tanque) {
+        cout << "Nivel de agua: " << tanque.nivelAgua ;
+        if (tanque.nivelAgua >= 0.5 && tanque.nivelAgua <= 2) {
+            cout << "Dentro del intervalo." << endl;
+            return true;
+        } else {
+            return false;
+        }
+    }
+};
+
+class Alarma : virtual public Sensor{
+	public:
+	bool alarmaalturaliquido, alarmatemperatura, alarmapresion, alarmaalturaagua;
+	
+	void activaralarma(){
+		if (this -> leerNivelLiquido() == false){
+		cout << "/¡Liquido fuera del intervalo!" << endl;
+		};
+		if (this -> leerTemperatura() == false){
+			cout << "¡Temperatura fuera del intervalo!" << endl;
+		};
+		if (this -> leerPresion() == false){
+			cout << "¡Presion fuera del intervalo!" << endl;
+		};
+		if (this -> leerNivelAgua() == false){
+			cout << "¡Agua fuera del intervalo!" << endl;
+			};
+	}
 };
 
 class Supervisor{
@@ -52,73 +112,6 @@ class Supervisor{
 		int dia, mes, ano;
 	};
 };
-
-class Sensor : public TanquePetroleo, public Alarma {
-public:
-	
-	
-    bool  leerNivelLiquido(const TanquePetroleo& tanque) {
-            cout << "Nivel de Liquido: " << tanque.nivelLiquido ;	
-        if (tanque.nivelLiquido >= 0 && tanque.nivelLiquido <= 90) {
-            cout << " Dentro del intervalo." << endl;
-            return true;
-        } else {
-			this-> activaralarmal();
-            return false;
-        }
-    }
-
-    bool leerTemperatura(const TanquePetroleo& tanque) {
-        cout << "Temperatura: " << tanque.temperatura ;
-        if (tanque.temperatura >= -20 && tanque.temperatura <= 100) {
-            cout << " Dentro del intervalo." << endl;
-            return true;
-        } else {
-			this-> activaralarmall();
-            return false;
-		}
-    }
-
-    bool leerPresion(const TanquePetroleo& tanque) {
-        cout << "Presion: " << tanque.presion ;
-        if (tanque.presion >= 2 && tanque.presion <= 8) {
-            cout << " Dentro del intervalo." << endl;
-            return true;
-        } else {
-			this-> activaralarmalll();
-            return false;
-        }
-    }
-
-    void leerDensidad(const TanquePetroleo& tanque) {
-        cout << "Densidad: " << tanque.densidad ;
-        if (tanque.densidad >= 0.83 && tanque.densidad < 0.87) {
-            cout << " Tipo de crudo: Ligero" << endl;
-        } 	
-        if (tanque.densidad >= 0.87 && tanque.densidad < 0.92) {
-            cout << " Tipo de crudo: Mediano" << endl;
-        } 	
-        if (tanque.densidad >= 0.92 && tanque.densidad < 1.00) {
-            cout << " Tipo de crudo: Pesado" << endl;
-        } 	
-		if (tanque.densidad >= 1) {
-            cout << " Tipo de crudo: Extrapesado" << endl;
-        } 	        
-    }
-
-    bool leerNivelAgua(const TanquePetroleo& tanque) {
-        cout << "Nivel de agua: " << tanque.nivelAgua ;
-        if (tanque.nivelAgua >= 0.5 && tanque.nivelAgua <= 2) {
-            cout << " Dentro del intervalo." << endl;
-            return true;
-        } else {
-		this-> activaralarmalv();
-        return false;
-        }
-    }
-};
-
-
 
 class sistemasupervisorio : virtual public TanquePetroleo, virtual public Sensor, public Alarma, public Supervisor{
 	public:
@@ -136,6 +129,7 @@ class sistemasupervisorio : virtual public TanquePetroleo, virtual public Sensor
     sensor.leerPresion(tanque);
     sensor.leerDensidad(tanque);
     sensor.leerNivelAgua(tanque);
+	alarma.activaralarma();
 	}
 };
 
