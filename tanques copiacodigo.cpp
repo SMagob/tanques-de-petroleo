@@ -201,19 +201,20 @@ public:
         cin.ignore(); // Limpiar el buffer de entrada antes de getline()
         getline(cin, nuevoSupervisor->nombre);
     
-        // Ingreso y validación de la fecha de supervisión
+        // Ingreso y validacion de la fecha de supervision
         bool fechaValida = false;
         do {
-            cout << "Ingrese la fecha de supervisión (dd mm aaaa): ";
+            cout << "Ingrese la fecha de supervision. Los dias deben estar entre 1-31, los meses entre 1-12 y los anos deben tener 4 digitos (dd mm aaaa): ";
             if (cin >> nuevoSupervisor->dia >> nuevoSupervisor->mes >> nuevoSupervisor->ano) {
                 if (nuevoSupervisor->dia >= 1 && nuevoSupervisor->dia <= 31 &&
-                    nuevoSupervisor->mes >= 1 && nuevoSupervisor->mes <= 12) {
+                    nuevoSupervisor->mes >= 1 && nuevoSupervisor->mes <= 12 &&
+                    nuevoSupervisor->ano >= 0 && nuevoSupervisor->ano <= 9999) { 
                     fechaValida = true;
                 } else {
-                    cout << "Fecha inválida. Días deben estar entre 1-31 y meses entre 1-12." << endl;
+                    cout << "Fecha invalida. Los dias deben estar entre 1-31, los meses entre 1-12 y los anos deben tener 4 digitos." << endl;
                 }
             } else {
-                cout << "Formato de fecha inválido. Intente nuevamente." << endl;
+                cout << "Formato de fecha invalido. Intente nuevamente." << endl;
                 cin.clear();
                 cin.ignore(1000, '\n'); // Limpiar el buffer de entrada
             }
@@ -233,7 +234,6 @@ public:
         delete nuevoSupervisor; // Liberar la memoria asignada
     }
     
-
     void generarReporteTanques() {
         ofstream archivo("reporte_tanque.txt", ios::out);
 
