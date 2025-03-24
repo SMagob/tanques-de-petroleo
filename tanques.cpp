@@ -128,14 +128,14 @@ public:
         int opcion;
         do {
             cout << "\n Menu:\n";
-            cout << "1. Agregar tanques\n";
-            cout << "2. Mostrar tanques\n";
-            cout << "3. Eliminar tanques\n";
-            cout << "4. Agregar supervisores\n";
-            cout << "5. Generar reporte de tanques\n";
-            cout << "6. Mostrar parametros de un tanque\n";
-            cout << "7. Generar reporte de supervisores\n";
-            cout << "8. Salir\n";
+                cout << "1. Agregar tanques (agrega e inicia valores de un tanque)\n";
+                cout << "2. Mostrar tanques (muestra todos los tanques en el sistema)\n";
+                cout << "3. Eliminar tanques (elimina el ultimo tanque introducido al sistema)\n";
+                cout << "4. Agregar supervisores (ingresa un supervisor al sistema con su informacion personal)\n";
+                cout << "5. Generar reporte de tanques (genera un reporte de los tanques)\n";
+                cout << "6. Mostrar parametros de un tanque (muestra los parametros de un tanque en especifico)\n";
+                cout << "7. Generar reporte de supervisores (muestra informacion de los supervisores)\n";
+                cout << "8. Salir\n";
             cout << "Ingrese una opcion: ";
             cin >> opcion;
 
@@ -144,13 +144,13 @@ public:
                 cin.ignore(1000, '\n');
                 cout << "Entrada invalida, por favor introduzca un valor entre 1 y 7" << endl;
                 cout << "\n Menu:\n";
-                cout << "1. Agregar tanques\n";
-                cout << "2. Mostrar tanques\n";
-                cout << "3. Eliminar tanques\n";
-                cout << "4. Agregar supervisores\n";
-                cout << "5. Generar reporte de tanques\n";
-                cout << "6. Mostrar parametros de un tanque\n";
-                cout << "7. Generar reporte de supervisores\n";
+                cout << "1. Agregar tanques (agrega e inicia valores de un tanque)\n";
+                cout << "2. Mostrar tanques (muestra todos los tanques en el sistema)\n";
+                cout << "3. Eliminar tanques (elimina el ultimo tanque introducido al sistema)\n";
+                cout << "4. Agregar supervisores (ingresa un supervisor al sistema con su informacion personal)\n";
+                cout << "5. Generar reporte de tanques (genera un reporte de los tanques)\n";
+                cout << "6. Mostrar parametros de un tanque (muestra los parametros del ultimo tanque agregado)\n";
+                cout << "7. Generar reporte de supervisores (muestra informacion de los supervisores)\n";
                 cout << "8. Salir\n";
                 cout << "Ingrese una opcion: ";
                 cin >> opcion;
