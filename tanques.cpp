@@ -1,6 +1,8 @@
-#include<iostream>
-#include<cstdlib>
-#include<ctime>
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <fstream>
+#include <vector>
 using namespace std;
 
 class TanquePetroleo {
@@ -9,8 +11,8 @@ public:
     float temperatura;
     float presion;
     float densidad;
-    float nivelAgua;	
-    
+    float nivelAgua;
+
     TanquePetroleo() {
         srand(time(0)); // Inicializar la semilla para números aleatorios
     }
@@ -20,155 +22,237 @@ public:
         temperatura = -40 + rand() % 160;   // Temperatura entre -40 y 120
         presion = 1 + rand() % 10;        // Presión entre 1 y 10
         densidad = 0.83 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 0.4)); // Densidad entre 0.83 y 1.23
-        nivelAgua = ((1 + rand() % 8)/ 2);          // Nivel de agua entre 0 y 4
+        nivelAgua = (( rand() % 8) / 2);          // Nivel de agua entre 0 y 4
     }
 };
 
-class Alarma : virtual public TanquePetroleo{
-	public:
+class Alarma : virtual public TanquePetroleo {
+public:
+    void activaralarmal() {
+        cout << " Liquido fuera del intervalo!" << endl;
+    }
 
-	void activaralarmal(){
-		cout << " Liquido fuera del intervalo!" << endl;
-	}
+    void activaralarmall() {
+        cout << " Temperatura fuera del intervalo!" << endl;
+    }
 
-	void activaralarmall(){
-		cout << " Temperatura fuera del intervalo!" << endl;
-	}
+    void activaralarmalll() {
+        cout << " Presion fuera del intervalo!" << endl;
+    }
 
-	void activaralarmalll(){
-		cout << " Presion fuera del intervalo!" << endl;
-	}
-
-	void activaralarmalv(){
-		cout << " Agua fuera del intervalo!" << endl;
-	}
-	
+    void activaralarmalv() {
+        cout << " Agua fuera del intervalo!" << endl;
+    }
 };
 
-class Supervisor{
-	public:
-	string nombre;
-	struct fecha{
-		int dia, mes, ano;
-	};
+class Supervisor {
+public:
+    string nombre;
+    struct fecha {
+        int dia, mes, ano;
+    };
 };
 
 class Sensor : public Alarma {
 public:
-	
-	
-    bool  leerNivelLiquido(const TanquePetroleo& tanque) {
-            cout << "Nivel de Liquido: " << tanque.nivelLiquido ;	
+    bool leerNivelLiquido(const TanquePetroleo& tanque) {
+        cout << "Nivel de Liquido: " << tanque.nivelLiquido;
         if (tanque.nivelLiquido >= 0 && tanque.nivelLiquido <= 90) {
             cout << " Dentro del intervalo." << endl;
             return true;
         } else {
-			this-> activaralarmal();
+            this->activaralarmal();
             return false;
         }
     }
 
     bool leerTemperatura(const TanquePetroleo& tanque) {
-        cout << "Temperatura: " << tanque.temperatura ;
+        cout << "Temperatura: " << tanque.temperatura;
         if (tanque.temperatura >= -20 && tanque.temperatura <= 100) {
             cout << " Dentro del intervalo." << endl;
             return true;
         } else {
-			this-> activaralarmall();
+            this->activaralarmall();
             return false;
-		}
+        }
     }
 
     bool leerPresion(const TanquePetroleo& tanque) {
-        cout << "Presion: " << tanque.presion ;
+        cout << "Presion: " << tanque.presion;
         if (tanque.presion >= 2 && tanque.presion <= 8) {
             cout << " Dentro del intervalo." << endl;
             return true;
         } else {
-			this-> activaralarmalll();
+            this->activaralarmalll();
             return false;
         }
     }
 
-    void leerDensidad(const TanquePetroleo& tanque) {
-        cout << "Densidad: " << tanque.densidad ;
+    string leerDensidad(const TanquePetroleo& tanque) {
         if (tanque.densidad >= 0.83 && tanque.densidad < 0.87) {
-            cout << " Tipo de crudo: Ligero" << endl;
-        } 	
-        if (tanque.densidad >= 0.87 && tanque.densidad < 0.92) {
-            cout << " Tipo de crudo: Mediano" << endl;
-        } 	
-        if (tanque.densidad >= 0.92 && tanque.densidad < 1.00) {
-            cout << " Tipo de crudo: Pesado" << endl;
-        } 	
-		if (tanque.densidad >= 1) {
-            cout << " Tipo de crudo: Extrapesado" << endl;
-        } 	        
+            return "Ligero";
+        } else if (tanque.densidad >= 0.87 && tanque.densidad < 0.92) {
+            return "Mediano";
+        } else if (tanque.densidad >= 0.92 && tanque.densidad < 1.00) {
+            return "Pesado";
+        } else if (tanque.densidad >= 1.00) {
+            return "Extrapesado";
+        } else {
+            return "Desconocido";
+        }
     }
 
     bool leerNivelAgua(const TanquePetroleo& tanque) {
-        cout << "Nivel de agua: " << tanque.nivelAgua ;
+        cout << "Nivel de agua: " << tanque.nivelAgua;
         if (tanque.nivelAgua >= 0.5 && tanque.nivelAgua <= 2) {
             cout << " Dentro del intervalo." << endl;
             return true;
         } else {
-		this-> activaralarmalv();
-        return false;
+            this->activaralarmalv();
+            return false;
         }
     }
 };
 
+class sistemasupervisorio : virtual public TanquePetroleo, virtual public Sensor, public Supervisor {
+public:
+    vector<TanquePetroleo*> tanques;
+    vector<Sensor*> sensores;
 
+    void iniciarsistema() {
+        int opcion;
+        do {
+            cout << "\n Menu:\n";
+            cout << "1. Agregar tanques\n";
+            cout << "2. Eliminar tanques\n";
+            cout << "3. Agregar supervisores\n";
+            cout << "4. Generar reporte de tanques\n";
+            cout << "5. Mostrar parametros de un tanque\n";
+            cout << "6. Generar reporte de supervisores\n";
+            cout << "7. Salir\n";
+            cout << "Ingrese una opcion: ";
+            cin >> opcion;
 
-class sistemasupervisorio : virtual public TanquePetroleo, virtual public Sensor, public Supervisor{
-	public:
+            while (cin.fail()) { // Validacion de entrada para evitar caracteres no numericos
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << "Entrada invalida, por favor introduzca un valor entre 1 y 7" << endl;
+                cout << "\n Menu:\n";
+                cout << "1. Agregar tanques\n";
+                cout << "2. Eliminar tanques\n";
+                cout << "3. Agregar supervisores\n";
+                cout << "4. Generar reporte de tanques\n";
+                cout << "5. Mostrar parametros de un tanque\n";
+                cout << "6. Generar reporte de supervisores\n";
+                cout << "7. Salir\n";
+                cout << "Ingrese una opcion: ";
+                cin >> opcion;
+            }
 
-	void iniciarsistema(){
-	TanquePetroleo tanque;
-    Sensor sensor;
-	Alarma alarma;
-	Supervisor supervisor;	
-	int opcion;
-	
-	cout <<  "             Sistema iniciado correctamente\n\n";
-	tanque.generarParametros();
-	sensor.leerNivelLiquido(tanque);
-    sensor.leerTemperatura(tanque);
-    sensor.leerPresion(tanque);
-    sensor.leerDensidad(tanque);
-    sensor.leerNivelAgua(tanque);
-	cin >> opcion;
-	switch (opcion){
-		case 0:
+            switch (opcion) {
+                case 1:
+                    agregarTanque();
+                    break;
+                case 2:
+                    eliminarTanque();
+                    break;
+                case 3:
+                    agregarSupervisor();
+                    break;
+                case 4:
+                    generarReporteTanques();
+                    break;
+                case 5:
+                    mostrarParametrosTanque();
+                    break;
+                case 6:
+                    generarReporteSupervisores();
+                    break;
+                case 7:
+                    cout << "Saliendo..." << endl;
+                    break;
+                default:
+                    cout << "No escogio ninguna de las opciones, vuelva a ingresar la opcion correspondiente." << endl;
+                    break;
+            }
+        } while (opcion != 7);
+    }
 
-		break;
-		case 1:
+    void agregarTanque() {
+        TanquePetroleo* nuevoTanque = new TanquePetroleo();
+        nuevoTanque->generarParametros();
+        tanques.push_back(nuevoTanque);
+        cout << "Tanque agregado correctamente." << endl;
+    }
 
-		break;
-		case 2:
+    void eliminarTanque() {
+        if (tanques.empty()) {
+            cout << "No hay tanques para eliminar." << endl;
+        } else {
+            delete tanques.back();
+            tanques.pop_back();
+            cout << "Ultimo tanque eliminado correctamente." << endl;
+        }
+    }
 
-		break;
-		case 3:
+    void agregarSupervisor() {
+        cout << "Funcionalidad no implementada aun." << endl;
+    }
 
-		break;
-		case 4:
+    void generarReporteTanques() {
+        ofstream archivo("reporte_tanque.txt", ios::out);
 
-		break;
-		default:
-		cout <<"No escogio ninguna de las opciones, vuelva a ingresar la opcion correspondiente.";
-		break;
-	};
-	}
+        if (archivo.fail()) {
+            cerr << "Error al abrir el archivo para el reporte." << endl;
+            exit(1);
+        }
 
+        archivo << "Reporte de Parámetros del Tanque" << endl;
+        archivo << "--------------------------------" << endl;
+
+        for (const auto& tanque : tanques) {
+            string tipoCrudo = leerDensidad(*tanque);
+
+            archivo << "Nivel de Líquido: " << tanque->nivelLiquido << endl;
+            archivo << "Temperatura: " << tanque->temperatura << endl;
+            archivo << "Presión: " << tanque->presion << endl;
+            archivo << "Densidad: " << tanque->densidad << " - Tipo de crudo: " << tipoCrudo << endl;
+            archivo << "Nivel de Agua: " << tanque->nivelAgua << endl;
+            archivo << "--------------------------------" << endl;
+        }
+
+        archivo.close();
+        cout << "Reporte generado correctamente en 'reporte_tanque.txt'." << endl;
+    }
+
+    void mostrarParametrosTanque() {
+        if (tanques.empty()) {
+            cout << "No hay tanques registrados." << endl;
+        } else {
+            cout << "Mostrando parámetros del último tanque agregado:" << endl;
+            TanquePetroleo* ultimoTanque = tanques.back();
+            Sensor sensor;
+            sensor.leerNivelLiquido(*ultimoTanque);
+            sensor.leerTemperatura(*ultimoTanque);
+            sensor.leerPresion(*ultimoTanque);
+            cout << "Densidad: " << ultimoTanque->densidad << " - Tipo de crudo: " << sensor.leerDensidad(*ultimoTanque) << endl;
+            sensor.leerNivelAgua(*ultimoTanque);
+        }
+    }
+
+    void generarReporteSupervisores() {
+        cout << "Funcionalidad no implementada aun." << endl;
+    }
 };
 
-int main(){
-	sistemasupervisorio sistema;
+int main() {
+    sistemasupervisorio sistema;
 
-	cout << "Universidad Nacional Experimental Politecnica de Venezuela \n"<< endl;
-    cout << "PROGRAMA DE SUPERVISION Y CONTROL DE LOS PARAMETROS \nOPERATIVOS DE UN TANQUE DE ALMACENAMIENTO DE PETROLEO \n"<<endl;
-	cout << "Codigo desarrollado por: \n ~ Daniel Moran	 CI:30454164	Exp:20211-0069 \n ~ Jesus Morales	 CI:28585772	Exp:20211-0336 \n ~ Ronald Gordillo CI:30196995 	Exp:20221-0075 \n ~ Hector Duran 	 CI:30146076 	Exp:20211-0291";
-	cout << "\nSe iniciara el sistema de supervision de tanques:\n\n";
-	sistema.iniciarsistema();
+    cout << "Universidad Nacional Experimental Politecnica de Venezuela \n" << endl;
+    cout << "PROGRAMA DE SUPERVISION Y CONTROL DE LOS PARAMETROS \nOPERATIVOS DE UN TANQUE DE ALMACENAMIENTO DE PETROLEO \n" << endl;
+    cout << "Codigo desarrollado por: \n ~ Daniel Moran     CI:30454164    Exp:20211-0069 \n ~ Jesus Morales    CI:28585772    Exp:20211-0336 \n ~ Ronald Gordillo  CI:30196995    Exp:20221-0075 \n ~ Hector Duran     CI:30146076    Exp:20211-0291";
+    cout << "\nSe iniciara el sistema de supervision de tanques:\n\n";
+    sistema.iniciarsistema();
+
     return 0;
 }
