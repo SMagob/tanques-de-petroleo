@@ -200,10 +200,11 @@ public:
             cout << "\nNo hay tanques para mostrar." << endl;
         } else {
         cout << "\nTanques disponibles:\n";
-		for (const auto& tanque : tanques) {
-			cout << "ID: " << tanque->id << " | Nivel: " << tanque->nivelLiquido 
-				 << " | Temp: " << tanque->temperatura << endl;   
-        }
+		for (std::vector<TanquePetroleo*>::const_iterator it = tanques.begin(); it != tanques.end(); ++it) {
+    const TanquePetroleo* tanque = *it;
+    cout << "ID: " << tanque->id << " | Nivel: " << tanque->nivelLiquido
+         << " | Temp: " << tanque->temperatura << endl;
+}
 		}
 	}
 
@@ -264,13 +265,14 @@ public:
 				cin >> idTanque;
 
 				bool existe = false;
-				for (const auto& tanque : tanques) {
-					if (tanque->id == idTanque) {
-						nuevoSupervisor->tanquesAsignados.push_back(idTanque);
-						existe = true;
-						break;
-					}
-				}
+				for (std::vector<TanquePetroleo*>::const_iterator it = tanques.begin(); it != tanques.end(); ++it) {
+                    const TanquePetroleo* tanque = *it;
+                    if (tanque->id == idTanque) {
+                        nuevoSupervisor->tanquesAsignados.push_back(idTanque);
+                        existe = true;
+                        break;
+                    }
+                }
 				
 				if (!existe) {
 					cout << "ID de tanque no válido.\n";
@@ -286,7 +288,7 @@ public:
 		}
 
 		supervisores.push_back(nuevoSupervisor);
-		cout << "✅ Supervisor agregado correctamente.\n";
+		cout << "? Supervisor agregado correctamente.\n";
     }
     
     void generarReporteTanques() {
@@ -300,16 +302,17 @@ public:
         archivo << "Reporte de Parámetros del Tanque" << endl;
         archivo << "--------------------------------" << endl;
 
-        for (const auto& tanque : tanques) {
-            string tipoCrudo = leerDensidad(*tanque);
+        for (std::vector<TanquePetroleo*>::const_iterator it = tanques.begin(); it != tanques.end(); ++it) {
+    const TanquePetroleo* tanque = *it;
+    std::string tipoCrudo = leerDensidad(*tanque);
 
-            archivo << "Nivel de Líquido: " << tanque->nivelLiquido << endl;
-            archivo << "Temperatura: " << tanque->temperatura << endl;
-            archivo << "Presión: " << tanque->presion << endl;
-            archivo << "Densidad: " << tanque->densidad << " - Tipo de crudo: " << tipoCrudo << endl;
-            archivo << "Nivel de Agua: " << tanque->nivelAgua << endl;
-            archivo << "--------------------------------" << endl;
-        }
+    archivo << "Nivel de Líquido: " << tanque->nivelLiquido << std::endl;
+    archivo << "Temperatura: " << tanque->temperatura << std::endl;
+    archivo << "Presión: " << tanque->presion << std::endl;
+    archivo << "Densidad: " << tanque->densidad << " - Tipo de crudo: " << tipoCrudo << std::endl;
+    archivo << "Nivel de Agua: " << tanque->nivelAgua << std::endl;
+    archivo << "--------------------------------" << std::endl;
+}
 
         archivo.close();
         cout << "Reporte generado correctamente en 'reporte_tanque.txt'." << endl;
@@ -340,21 +343,22 @@ public:
 		if (supervisores.empty()){
 			cout << "Advertencia: no hay supervisores registrados.\n";
 		}
-		for (const auto& supervisor : supervisores) {
-			archivo2 << "Reporte realizado por: " << supervisor->nombre << "\n";
-			archivo2 << "Fecha de Reporte: Dia " << supervisor->dia 
-					 << " del Mes " << supervisor->mes 
-					 << " del año " << supervisor->ano << "\n\n";
-			archivo2 << "Tanques asignados: ";
-        if (supervisor->tanquesAsignados.empty()) {
-            archivo2 << "Ninguno";
-        } else {
-            for (int id : supervisor->tanquesAsignados) {
-                archivo2 << id << " ";
-            }
+		for (std::vector<Supervisor*>::const_iterator it = supervisores.begin(); it != supervisores.end(); ++it) {
+    const Supervisor* supervisor = *it;
+    archivo2 << "Reporte realizado por: " << supervisor->nombre << "\n";
+    archivo2 << "Fecha de Reporte: Dia " << supervisor->dia
+             << " del Mes " << supervisor->mes
+             << " del año " << supervisor->ano << "\n\n";
+    archivo2 << "Tanques asignados: ";
+    if (supervisor->tanquesAsignados.empty()) {
+        archivo2 << "Ninguno";
+    } else {
+        for (std::vector<int>::const_iterator idIt = supervisor->tanquesAsignados.begin(); idIt != supervisor->tanquesAsignados.end(); ++idIt) {
+            archivo2 << *idIt << " ";
         }
-        archivo2 << "\n\n";
     }
+    archivo2 << "\n\n";
+}
         cout << "Reporte generado correctamente en 'reporte_supervisor.txt'." << endl;
 		archivo2.close();  
 	}
