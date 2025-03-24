@@ -129,12 +129,13 @@ public:
         do {
             cout << "\n Menu:\n";
             cout << "1. Agregar tanques\n";
-            cout << "2. Eliminar tanques\n";
-            cout << "3. Agregar supervisores\n";
-            cout << "4. Generar reporte de tanques\n";
-            cout << "5. Mostrar parametros de un tanque\n";
-            cout << "6. Generar reporte de supervisores\n";
-            cout << "7. Salir\n";
+            cout << "2. Mostrar tanques\n";
+            cout << "3. Eliminar tanques\n";
+            cout << "4. Agregar supervisores\n";
+            cout << "5. Generar reporte de tanques\n";
+            cout << "6. Mostrar parametros de un tanque\n";
+            cout << "7. Generar reporte de supervisores\n";
+            cout << "8. Salir\n";
             cout << "Ingrese una opcion: ";
             cin >> opcion;
 
@@ -144,12 +145,13 @@ public:
                 cout << "Entrada invalida, por favor introduzca un valor entre 1 y 7" << endl;
                 cout << "\n Menu:\n";
                 cout << "1. Agregar tanques\n";
-                cout << "2. Eliminar tanques\n";
-                cout << "3. Agregar supervisores\n";
-                cout << "4. Generar reporte de tanques\n";
-                cout << "5. Mostrar parametros de un tanque\n";
-                cout << "6. Generar reporte de supervisores\n";
-                cout << "7. Salir\n";
+                cout << "2. Mostrar tanques\n";
+                cout << "3. Eliminar tanques\n";
+                cout << "4. Agregar supervisores\n";
+                cout << "5. Generar reporte de tanques\n";
+                cout << "6. Mostrar parametros de un tanque\n";
+                cout << "7. Generar reporte de supervisores\n";
+                cout << "8. Salir\n";
                 cout << "Ingrese una opcion: ";
                 cin >> opcion;
             }
@@ -159,28 +161,31 @@ public:
                     agregarTanque();
                     break;
                 case 2:
-                    eliminarTanque();
+                    mostrarTanquesDisponibles(tanques);
                     break;
                 case 3:
-                    agregarSupervisor();
+                    eliminarTanque();
                     break;
                 case 4:
-                    generarReporteTanques();
+                    agregarSupervisor();
                     break;
                 case 5:
-                    mostrarParametrosTanque();
+                    generarReporteTanques();
                     break;
                 case 6:
-                    generarReporteSupervisores();
+                    mostrarParametrosTanque();
                     break;
                 case 7:
+                    generarReporteSupervisores();
+                    break;
+                case 8:
                     cout << "Saliendo..." << endl;
                     break;
                 default:
                     cout << "No escogio ninguna de las opciones, vuelva a ingresar la opcion correspondiente." << endl;
                     break;
             }
-        } while (opcion != 7);
+        } while (opcion != 8);
     }
 
     void agregarTanque() {
@@ -191,10 +196,14 @@ public:
     }
 
 	void mostrarTanquesDisponibles(const vector<TanquePetroleo*>& tanques) {
-		cout << "\nTanques disponibles:\n";
+		if (tanques.empty()) {
+            cout << "\nNo hay tanques para mostrar." << endl;
+        } else {
+        cout << "\nTanques disponibles:\n";
 		for (const auto& tanque : tanques) {
 			cout << "ID: " << tanque->id << " | Nivel: " << tanque->nivelLiquido 
-				 << " | Temp: " << tanque->temperatura << endl;
+				 << " | Temp: " << tanque->temperatura << endl;   
+        }
 		}
 	}
 
@@ -347,7 +356,8 @@ public:
         archivo2 << "\n\n";
     }
 		archivo2.close();  
-	};
+	}
+};
 
 int main() {
     sistemasupervisorio sistema;
@@ -360,4 +370,3 @@ int main() {
 
     return 0;
 }
-};
