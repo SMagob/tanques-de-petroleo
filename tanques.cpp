@@ -5,15 +5,18 @@
 #include <vector>
 using namespace std;
 
+
 class TanquePetroleo {
 public:
+	int id;  
+	static int contadorId;  
     float nivelLiquido;
     float temperatura;
     float presion;
     float densidad;
     float nivelAgua;
 
-    TanquePetroleo() {
+    TanquePetroleo() : id(++contadorId) {
         srand(time(0)); // Inicializar la semilla para números aleatorios
     }
 
@@ -25,6 +28,8 @@ public:
         nivelAgua = (( rand() % 8) / 2);          // Nivel de agua entre 0 y 4
     }
 };
+
+int TanquePetroleo::contadorId = 0;
 
 class Alarma : virtual public TanquePetroleo {
 public:
@@ -49,6 +54,7 @@ class Supervisor {
 public:
     string nombre;
     int dia, mes, ano;
+	vector<int> tanquesAsignados;
 };
 
 class Sensor : public Alarma {
@@ -112,11 +118,12 @@ public:
     }
 };
 
-class sistemasupervisorio : virtual public TanquePetroleo, virtual public Sensor, public Supervisor {
+class sistemasupervisorio : virtual public TanquePetroleo, virtual public Sensor, virtual public Supervisor {
 public:
+
     vector<TanquePetroleo*> tanques;
     vector<Sensor*> sensores;
-    vector<Supervisor*> supervisor;
+    vector<Supervisor*> supervisores;
     void iniciarsistema() {
         int opcion;
         do {
@@ -183,6 +190,14 @@ public:
         cout << "\nTanque agregado correctamente." << endl;
     }
 
+	void mostrarTanquesDisponibles(const vector<TanquePetroleo*>& tanques) {
+		cout << "\nTanques disponibles:\n";
+		for (const auto& tanque : tanques) {
+			cout << "ID: " << tanque->id << " | Nivel: " << tanque->nivelLiquido 
+				 << " | Temp: " << tanque->temperatura << endl;
+		}
+	}
+
     void eliminarTanque() {
         if (tanques.empty()) {
             cout << "\nNo hay tanques para eliminar." << endl;
@@ -230,8 +245,39 @@ public:
         } else {
             cout << "Error al abrir el archivo para guardar el supervisor." << endl;
         }
-    
-        delete nuevoSupervisor; // Liberar la memoria asignada
+
+		if (!tanques.empty()) {
+			char asignarMas;
+			do {
+				mostrarTanquesDisponibles(tanques);
+				cout << "Ingrese el ID del tanque a asignar: ";
+				int idTanque;
+				cin >> idTanque;
+
+				bool existe = false;
+				for (const auto& tanque : tanques) {
+					if (tanque->id == idTanque) {
+						nuevoSupervisor->tanquesAsignados.push_back(idTanque);
+						existe = true;
+						break;
+					}
+				}
+				
+				if (!existe) {
+					cout << "ID de tanque no válido.\n";
+				} else {
+					cout << "Tanque asignado correctamente.\n";
+				}
+				
+				cout << "¿Desea asignar otro tanque? (s/n): ";
+				cin >> asignarMas;
+			} while (asignarMas == 's' || asignarMas == 'S');
+		} else {
+			cout << "No hay tanques disponibles para asignar.\n";
+		}
+
+		supervisores.push_back(nuevoSupervisor);
+		cout << "✅ Supervisor agregado correctamente.\n";
     }
     
     void generarReporteTanques() {
@@ -275,10 +321,33 @@ public:
         }
     }
 
-    void generarReporteSupervisores() {
-        cout << "\nFuncionalidad no implementada aun." << endl;
+	void generarReporteSupervisores() {
+		ofstream archivo2("reporte_supervisor.txt");
+		if (!archivo2) {
+			cout << "Error al abrir reporte_supervisor.txt\n";
+			exit(EXIT_FAILURE);
+		}
+		
+		if (supervisores.empty()){
+			cout << "Advertencia: no hay supervisores registrados.\n";
+		}
+		for (const auto& supervisor : supervisores) {
+			archivo2 << "Reporte realizado por: " << supervisor->nombre << "\n";
+			archivo2 << "Fecha de Reporte: Dia " << supervisor->dia 
+					 << " del Mes " << supervisor->mes 
+					 << " del año " << supervisor->ano << "\n\n";
+			archivo2 << "Tanques asignados: ";
+        if (supervisor->tanquesAsignados.empty()) {
+            archivo2 << "Ninguno";
+        } else {
+            for (int id : supervisor->tanquesAsignados) {
+                archivo2 << id << " ";
+            }
+        }
+        archivo2 << "\n\n";
     }
-};
+		archivo2.close();  
+	};
 
 int main() {
     sistemasupervisorio sistema;
@@ -291,3 +360,4 @@ int main() {
 
     return 0;
 }
+};
