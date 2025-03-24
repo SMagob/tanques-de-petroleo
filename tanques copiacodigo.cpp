@@ -48,9 +48,7 @@ public:
 class Supervisor {
 public:
     string nombre;
-    struct fecha {
-        int dia, mes, ano;
-    };
+    int dia, mes, ano;
 };
 
 class Sensor : public Alarma {
@@ -118,7 +116,7 @@ class sistemasupervisorio : virtual public TanquePetroleo, virtual public Sensor
 public:
     vector<TanquePetroleo*> tanques;
     vector<Sensor*> sensores;
-
+    vector<Supervisor*> supervisor;
     void iniciarsistema() {
         int opcion;
         do {
@@ -182,22 +180,59 @@ public:
         TanquePetroleo* nuevoTanque = new TanquePetroleo();
         nuevoTanque->generarParametros();
         tanques.push_back(nuevoTanque);
-        cout << "Tanque agregado correctamente." << endl;
+        cout << "\nTanque agregado correctamente." << endl;
     }
 
     void eliminarTanque() {
         if (tanques.empty()) {
-            cout << "No hay tanques para eliminar." << endl;
+            cout << "\nNo hay tanques para eliminar." << endl;
         } else {
             delete tanques.back();
             tanques.pop_back();
-            cout << "Ultimo tanque eliminado correctamente." << endl;
+            cout << "\nUltimo tanque eliminado correctamente." << endl;
         }
     }
 
     void agregarSupervisor() {
-        cout << "Funcionalidad no implementada aun." << endl;
+        Supervisor* nuevoSupervisor = new Supervisor();
+    
+        // Ingreso del nombre del supervisor
+        cout << "Ingrese el nombre del supervisor: ";
+        cin.ignore(); // Limpiar el buffer de entrada antes de getline()
+        getline(cin, nuevoSupervisor->nombre);
+    
+        // Ingreso y validación de la fecha de supervisión
+        bool fechaValida = false;
+        do {
+            cout << "Ingrese la fecha de supervisión (dd mm aaaa): ";
+            if (cin >> nuevoSupervisor->dia >> nuevoSupervisor->mes >> nuevoSupervisor->ano) {
+                if (nuevoSupervisor->dia >= 1 && nuevoSupervisor->dia <= 31 &&
+                    nuevoSupervisor->mes >= 1 && nuevoSupervisor->mes <= 12) {
+                    fechaValida = true;
+                } else {
+                    cout << "Fecha inválida. Días deben estar entre 1-31 y meses entre 1-12." << endl;
+                }
+            } else {
+                cout << "Formato de fecha inválido. Intente nuevamente." << endl;
+                cin.clear();
+                cin.ignore(1000, '\n'); // Limpiar el buffer de entrada
+            }
+            cin.ignore(1000, '\n'); // Limpiar el buffer de entrada después de cada intento
+        } while (!fechaValida);
+    
+        // Almacenar en archivo txt
+        ofstream archivo("supervisores.txt", ios::app);
+        if (archivo.is_open()) {
+            archivo << nuevoSupervisor->nombre << "," << nuevoSupervisor->dia << "/" << nuevoSupervisor->mes << "/" << nuevoSupervisor->ano << endl;
+            archivo.close();
+            cout << "Supervisor agregado correctamente y almacenado en archivo." << endl;
+        } else {
+            cout << "Error al abrir el archivo para guardar el supervisor." << endl;
+        }
+    
+        delete nuevoSupervisor; // Liberar la memoria asignada
     }
+    
 
     void generarReporteTanques() {
         ofstream archivo("reporte_tanque.txt", ios::out);
@@ -227,9 +262,9 @@ public:
 
     void mostrarParametrosTanque() {
         if (tanques.empty()) {
-            cout << "No hay tanques registrados." << endl;
+            cout << "\nNo hay tanques registrados." << endl;
         } else {
-            cout << "Mostrando parámetros del último tanque agregado:" << endl;
+            cout << "\nMostrando parametros del ultimo tanque agregado:" << endl;
             TanquePetroleo* ultimoTanque = tanques.back();
             Sensor sensor;
             sensor.leerNivelLiquido(*ultimoTanque);
@@ -241,7 +276,7 @@ public:
     }
 
     void generarReporteSupervisores() {
-        cout << "Funcionalidad no implementada aun." << endl;
+        cout << "\nFuncionalidad no implementada aun." << endl;
     }
 };
 
