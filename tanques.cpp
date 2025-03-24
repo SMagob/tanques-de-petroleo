@@ -221,8 +221,10 @@ public:
     void agregarSupervisor() {
         Supervisor* nuevoSupervisor = new Supervisor();
     
-        // Ingreso del nombre del supervisor
-        cout << "Ingrese el nombre del supervisor: ";
+		if (!tanques.empty()) {
+			char asignarMas;
+            // Ingreso del nombre del supervisor
+        cout << "\nIngrese el nombre del supervisor: ";
         cin.ignore(); // Limpiar el buffer de entrada antes de getline()
         getline(cin, nuevoSupervisor->nombre);
     
@@ -253,11 +255,9 @@ public:
             archivo.close();
             cout << "Supervisor agregado correctamente y almacenado en archivo." << endl;
         } else {
-            cout << "Error al abrir el archivo para guardar el supervisor." << endl;
+            cout << "\nError al abrir el archivo para guardar el supervisor." << endl;
         }
 
-		if (!tanques.empty()) {
-			char asignarMas;
 			do {
 				mostrarTanquesDisponibles(tanques);
 				cout << "Ingrese el ID del tanque a asignar: ";
@@ -280,42 +280,40 @@ public:
 					cout << "Tanque asignado correctamente.\n";
 				}
 				
-				cout << "¿Desea asignar otro tanque? (s/n): ";
+				cout << "¿Desea asignar otro tanque? escriba:(s/S) para si, (n/N) para no: ";
 				cin >> asignarMas;
 			} while (asignarMas == 's' || asignarMas == 'S');
+            supervisores.push_back(nuevoSupervisor);
+		cout << " Supervisor agregado correctamente.\n";
 		} else {
-			cout << "No hay tanques disponibles para asignar.\n";
+			cout << "\nNo hay tanques disponibles para asignarle un supervisor.\n";
 		}
 
-		supervisores.push_back(nuevoSupervisor);
-		cout << "? Supervisor agregado correctamente.\n";
     }
     
     void generarReporteTanques() {
         ofstream archivo("reporte_tanque.txt", ios::out);
-
+        if (tanques.empty()) {
+            cout << "\nNo hay tanques para generar el reporte." << endl;
+        } else {
         if (archivo.fail()) {
-            cerr << "Error al abrir el archivo para el reporte." << endl;
+            cerr << "\nError al abrir el archivo para el reporte." << endl;
             exit(1);
         }
 
-        archivo << "Reporte de Parámetros del Tanque" << endl;
-        archivo << "--------------------------------" << endl;
-
         for (std::vector<TanquePetroleo*>::const_iterator it = tanques.begin(); it != tanques.end(); ++it) {
-    const TanquePetroleo* tanque = *it;
-    std::string tipoCrudo = leerDensidad(*tanque);
-
-    archivo << "Nivel de Líquido: " << tanque->nivelLiquido << std::endl;
-    archivo << "Temperatura: " << tanque->temperatura << std::endl;
-    archivo << "Presión: " << tanque->presion << std::endl;
-    archivo << "Densidad: " << tanque->densidad << " - Tipo de crudo: " << tipoCrudo << std::endl;
-    archivo << "Nivel de Agua: " << tanque->nivelAgua << std::endl;
-    archivo << "--------------------------------" << std::endl;
-}
-
+        const TanquePetroleo* tanque = *it;
+        std::string tipoCrudo = leerDensidad(*tanque);
+        archivo << "Nivel de Líquido: " << tanque->nivelLiquido << std::endl;
+        archivo << "Temperatura: " << tanque->temperatura << std::endl;
+        archivo << "Presión: " << tanque->presion << std::endl;
+        archivo << "Densidad: " << tanque->densidad << " - Tipo de crudo: " << tipoCrudo << std::endl;
+        archivo << "Nivel de Agua: " << tanque->nivelAgua << std::endl;
+        archivo << "--------------------------------" << std::endl;
+        }
         archivo.close();
-        cout << "Reporte generado correctamente en 'reporte_tanque.txt'." << endl;
+        cout << "\nReporte generado correctamente en 'reporte_tanque.txt'." << endl;
+    }
     }
 
     void mostrarParametrosTanque() {
@@ -341,25 +339,27 @@ public:
 		}
 		
 		if (supervisores.empty()){
-			cout << "Advertencia: no hay supervisores registrados.\n";
+			cout << "\nAdvertencia!: no hay supervisores registrados.\n";
 		}
-		for (std::vector<Supervisor*>::const_iterator it = supervisores.begin(); it != supervisores.end(); ++it) {
-    const Supervisor* supervisor = *it;
-    archivo2 << "Reporte realizado por: " << supervisor->nombre << "\n";
-    archivo2 << "Fecha de Reporte: Dia " << supervisor->dia
-             << " del Mes " << supervisor->mes
-             << " del año " << supervisor->ano << "\n\n";
-    archivo2 << "Tanques asignados: ";
-    if (supervisor->tanquesAsignados.empty()) {
-        archivo2 << "Ninguno";
-    } else {
-        for (std::vector<int>::const_iterator idIt = supervisor->tanquesAsignados.begin(); idIt != supervisor->tanquesAsignados.end(); ++idIt) {
-            archivo2 << *idIt << " ";
+        else{
+            for (std::vector<Supervisor*>::const_iterator it = supervisores.begin(); it != supervisores.end(); ++it) {
+                const Supervisor* supervisor = *it;
+                archivo2 << "Reporte realizado por: " << supervisor->nombre << "\n";
+                archivo2 << "Fecha de Reporte: Dia " << supervisor->dia
+                         << " del Mes " << supervisor->mes
+                         << " del año " << supervisor->ano << "\n\n";
+                archivo2 << "Tanques asignados: ";
+                if (supervisor->tanquesAsignados.empty()) {
+                    archivo2 << "Ninguno";
+                } else {
+                    for (std::vector<int>::const_iterator idIt = supervisor->tanquesAsignados.begin(); idIt != supervisor->tanquesAsignados.end(); ++idIt) {
+                        archivo2 << *idIt << " ";
+                    }
+                }
+                archivo2 << "\n\n";
+            }
+            cout << "\nReporte generado correctamente en 'reporte_supervisor.txt'." << endl;
         }
-    }
-    archivo2 << "\n\n";
-}
-        cout << "Reporte generado correctamente en 'reporte_supervisor.txt'." << endl;
 		archivo2.close();  
 	}
 };
