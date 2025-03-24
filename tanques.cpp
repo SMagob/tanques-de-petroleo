@@ -355,6 +355,7 @@ public:
         }
         archivo2 << "\n\n";
     }
+        cout << "Reporte generado correctamente en 'reporte_supervisor.txt'." << endl;
 		archivo2.close();  
 	}
 };
