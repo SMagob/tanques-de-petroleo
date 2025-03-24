@@ -49,6 +49,7 @@ class Supervisor {
 public:
     string nombre;
     int dia, mes, ano;
+
 };
 
 class Sensor : public Alarma {
@@ -112,11 +113,11 @@ public:
     }
 };
 
-class sistemasupervisorio : virtual public TanquePetroleo, virtual public Sensor, public Supervisor {
+class sistemasupervisorio : virtual public TanquePetroleo, virtual public Sensor, virtual public Supervisor {
 public:
     vector<TanquePetroleo*> tanques;
     vector<Sensor*> sensores;
-    vector<Supervisor*> supervisor;
+    vector<Supervisor*> supervisores;
     void iniciarsistema() {
         int opcion;
         do {
@@ -231,7 +232,8 @@ public:
             cout << "Error al abrir el archivo para guardar el supervisor." << endl;
         }
     
-        delete nuevoSupervisor; // Liberar la memoria asignada
+		supervisores.push_back(nuevoSupervisor);
+		cout << "✅ Supervisor agregado correctamente.\n";
     }
     
     void generarReporteTanques() {
@@ -275,9 +277,24 @@ public:
         }
     }
 
-    void generarReporteSupervisores() {
-        cout << "\nFuncionalidad no implementada aun." << endl;
-    }
+	void generarReporteSupervisores() {
+		ofstream archivo2("reporte_supervisor.txt");
+		if (!archivo2) {
+			cout << "Error al abrir reporte_supervisor.txt\n";
+			exit(EXIT_FAILURE);
+		}
+		
+		if (supervisores.empty()){
+			cout << "Advertencia: no hay supervisores registrados.\n";
+		}
+		for (const auto& supervisor : supervisores) {
+			archivo2 << "Reporte realizado por: " << supervisor->nombre << "\n";
+			archivo2 << "Fecha de Reporte: Dia " << supervisor->dia 
+					 << " del Mes " << supervisor->mes 
+					 << " del año " << supervisor->ano << "\n\n";
+		}
+		archivo2.close();  
+	}
 };
 
 int main() {
