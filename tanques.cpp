@@ -29,7 +29,7 @@ public:
     }
 };
 
-int TanquePetroleo::contadorId = 0;
+int TanquePetroleo::contadorId = -1;
 
 class Alarma : virtual public TanquePetroleo {
 public:
