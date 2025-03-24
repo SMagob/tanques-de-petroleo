@@ -1,0 +1,20 @@
+Reporte de Parámetros del Tanque
+--------------------------------
+Nivel de Líquido: 113
+Temperatura: 54
+Presión: 3
+Densidad: 1.08678 - Tipo de crudo: Extrapesado
+Nivel de Agua: 3
+--------------------------------
+Nivel de Líquido: 116
+Temperatura: 82
+Presión: 9
+Densidad: 0.980517 - Tipo de crudo: Pesado
+Nivel de Agua: 1
+--------------------------------
+Nivel de Líquido: 2
+Temperatura: 11
+Presión: 9
+Densidad: 1.16801 - Tipo de crudo: Extrapesado
+Nivel de Agua: 3
+--------------------------------
