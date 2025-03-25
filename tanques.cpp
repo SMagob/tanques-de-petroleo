@@ -120,11 +120,11 @@ public:
 
 class sistemasupervisorio : virtual public TanquePetroleo, virtual public Sensor, virtual public Supervisor {
 public:
-
     vector<TanquePetroleo*> tanques;
     vector<Sensor*> sensores;
     vector<Supervisor*> supervisores;
     void iniciarsistema() {
+        cout << "Iniciando Sistema . . . :)"<< endl;
         int opcion;
         do {
             cout << "\n Menu:\n";
@@ -370,7 +370,7 @@ int main() {
     cout << "Universidad Nacional Experimental Politecnica de Venezuela \n" << endl;
     cout << "PROGRAMA DE SUPERVISION Y CONTROL DE LOS PARAMETROS \nOPERATIVOS DE UN TANQUE DE ALMACENAMIENTO DE PETROLEO \n" << endl;
     cout << "Codigo desarrollado por: \n ~ Daniel Moran     CI:30454164    Exp:20211-0069 \n ~ Jesus Morales    CI:28585772    Exp:20211-0336 \n ~ Ronald Gordillo  CI:30196995    Exp:20221-0075 \n ~ Hector Duran     CI:30146076    Exp:20211-0291";
-    cout << "\nSe iniciara el sistema de supervision de tanques:\n\n";
+    cout << "\nEste codigo permite mediante un sistema de supervision, ingresar, eliminar, mostrar, generar reportes y demas funciones para supervisar los     tanques, que se hara por medio de las opciones que se mostraran en el menu, dicho esto, se iniciara el sistema de supervision de tanques:\n\n";
     sistema.iniciarsistema();
 
     return 0;
