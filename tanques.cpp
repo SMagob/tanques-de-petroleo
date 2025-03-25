@@ -195,18 +195,19 @@ public:
         cout << "\nTanque agregado correctamente." << endl;
     }
 
-	void mostrarTanquesDisponibles(const vector<TanquePetroleo*>& tanques) {
-		if (tanques.empty()) {
+    void mostrarTanquesDisponibles(vector<TanquePetroleo*>& tanques) {
+        if (tanques.empty()) {
             cout << "\nNo hay tanques para mostrar." << endl;
         } else {
-        cout << "\nTanques disponibles:\n";
-		for (std::vector<TanquePetroleo*>::const_iterator it = tanques.begin(); it != tanques.end(); ++it) {
-    const TanquePetroleo* tanque = *it;
-    cout << "ID: " << tanque->id << " | Nivel: " << tanque->nivelLiquido
-         << " | Temp: " << tanque->temperatura << endl;
-}
-		}
-	}
+            cout << "\nTanques disponibles:\n";
+            for (std::vector<TanquePetroleo*>::iterator it = tanques.begin(); it != tanques.end(); ++it) {
+                TanquePetroleo* tanque = *it;
+                tanque->temperatura = -40 + rand() % 160;
+                cout << "ID: " << tanque->id << " | Nivel: " << tanque->nivelLiquido
+                     << " | Temp: " << tanque->temperatura << endl;
+            }
+        }
+    }
 
     void eliminarTanque() {
         if (tanques.empty()) {
